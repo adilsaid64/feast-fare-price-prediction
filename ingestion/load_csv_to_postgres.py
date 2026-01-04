@@ -1,4 +1,3 @@
-from typing import Any
 import pandas as pd
 from sqlalchemy import Engine, create_engine, text
 
@@ -22,10 +21,8 @@ class CsvToPostgresLoader:
                 "lpep_dropoff_datetime": "dropoff_datetime",
             }
         )
-        df["pickup_datetime"] = pd.to_datetime(
-            df["pickup_datetime"], errors="coerce")
-        df["dropoff_datetime"] = pd.to_datetime(
-            df["dropoff_datetime"], errors="coerce")
+        df["pickup_datetime"] = pd.to_datetime(df["pickup_datetime"], errors="coerce")
+        df["dropoff_datetime"] = pd.to_datetime(df["dropoff_datetime"], errors="coerce")
         df = df.dropna(subset=["pickup_datetime"])
         print("Dataframe Loadad - Shape, ", df.shape)
         return df
