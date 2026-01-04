@@ -1,0 +1,19 @@
+project: feast_fare_price_prediction
+registry: s3://feast/registry.db
+provider: local
+
+offline_store:
+  type: postgres
+  host: postgres
+  port: 5432
+  database: mydb
+  user: admin
+  password: password
+  db_schema: public
+
+online_store:
+  type: redis
+  connection_string: redis:6379
+
+entity_key_serialization_version: 2
+
