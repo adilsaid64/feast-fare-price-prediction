@@ -32,6 +32,21 @@ services:
     volumes:
       - minio_data:/data
 
+  minio-init:
+    image: minio/mc
+    container_name: minio-init
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+      until mc alias set local http://minio:9000 admin password; do
+        echo 'Waiting for MinIO...';
+        sleep 2;
+      done;
+      mc mb -p local/feast || true;
+      mc ls local;
+      "
+
   redisinsight:
     image: redis/redisinsight:latest
     container_name: redis-insight
@@ -39,6 +54,15 @@ services:
       - "8001:8001"
     depends_on:
       - redis
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data:
